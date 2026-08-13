@@ -1,0 +1,40 @@
+name: CI Pipeline - API Tests
+
+# 1. Trigger the workflow on any push or pull request to the main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-api:
+    # 2. Specify the operating system for the GitHub Actions runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # 3. Pull your repository code onto the runner server
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 4. Set up the exact Python version we use in our Dockerfile
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          # This caches PIP dependencies to make future pipeline runs much faster
+          cache: "pip"
+
+      # 5. Install the project dependencies plus the testing tools
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+
+      # 6. Run the Pytest suite
+      - name: Run Unit Tests
+        run: |
+          pytest test_main.py -v
