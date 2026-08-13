@@ -37,6 +37,7 @@ Thumbs.db
 *.h5
 *.pt
 *.onnx
+*.csv
 
 # Logs
 *.log
