@@ -1,0 +1,23 @@
+[project]
+name = "dt-forecast"
+version = "0.1.0"
+description = "FastAPI service for transformer oil temperature forecasting with XGBoost"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "fastapi>=0.110.0,<1.0.0",
+    "uvicorn>=0.29.0,<1.0.0",
+    "pydantic>=2.0.0,<3.0.0",
+    "pandas>=2.0.0,<3.0.0",
+    "joblib>=1.3.0,<2.0.0",
+    "scikit-learn>=1.3.0,<2.0.0",
+    "xgboost>=2.0.0,<4.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "httpx>=0.27.0",
+]
+
+[tool.uv]
+package = false

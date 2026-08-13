@@ -17,24 +17,26 @@ jobs:
     steps:
       # 3. Pull your repository code onto the runner server
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # 4. Set up the exact Python version we use in our Dockerfile
+      # 4. Set up the exact Python version required by the project
       - name: Set up Python 3.10
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-          # This caches PIP dependencies to make future pipeline runs much faster
-          cache: "pip"
 
-      # 5. Install the project dependencies plus the testing tools
+      # 5. Install uv so dependency management and test execution use the uv-native workflow.
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: latest
+
+      # 6. Install the project and dev dependencies using uv's project-aware dependency management.
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest httpx
+          uv sync --extra dev
 
-      # 6. Run the Pytest suite
+      # 7. Run the pytest suite in the uv-managed environment.
       - name: Run Unit Tests
         run: |
-          pytest test_main.py -v
+          uv run pytest test_main.py -v
